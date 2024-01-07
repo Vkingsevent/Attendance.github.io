@@ -1,0 +1,302 @@
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Attendance Write Up - V Kings Events</title>
+  <style>
+    body {
+      font-family: 'Arial', sans-serif;
+      background-color: #f4f4f4;
+      margin: 10;
+      padding: 10;
+    }
+
+    h2 {
+      text-align: center;
+      color: #333;
+    }
+
+    div {
+      max-width: 600px;
+      margin: 30px auto;
+      padding: 50px;
+      background-color: #fff;
+      border-radius: 15px;
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+    }
+
+    h3 {
+      color: #333;
+    }
+
+    input {
+      width: 100%;
+      padding: 8px;
+      margin-bottom: 10px;
+      box-sizing: border-box;
+    }
+
+    button {
+      display: block;
+      width: 100%;
+      padding: 10px;
+      background-color: #4caf50;
+      color: #fff;
+      border: none;
+      border-radius: 15px;
+      cursor: pointer;
+      font-size: 20px;
+    }
+
+    table {
+      width: 100%;
+      margin-top: 8px;
+      border-collapse: collapse;
+	  color: black ;
+	  background-color:White ;
+	  font-size:25px;
+    }
+
+    th, td {
+      border: 1px solid #ddd;
+      padding: 3px;
+      text-align: left;
+    }
+
+    th {
+      background-color: #4caf50;
+      color: white;
+    }
+input[type="radio"] {
+  transform: scale(1.5); /* Adjust the scale value to increase or decrease the size */
+  margin-right: 5px; /* Optional: Adjust the margin for spacing */
+}
+input[type="checkbox"] {
+  transform: scale(1.5); /* Adjust the scale value to increase or decrease the size */
+  margin-right: 5px; /* Optional: Adjust the margin for spacing */
+}
+
+  </style>
+</head>
+<body>
+
+  <h2>Attendance Registration - V Kings Events</h2>
+
+  <div>
+    <h3>Step 1: Select Working Place</h3>
+    <input type="text" id="searchPlaceInput" placeholder="Search Working Place" oninput="searchAndShowPlaces()">
+    <button onclick="showAllPlaces()">Show All Places</button>
+
+    <table id="placesTable">
+      <thead>
+        <tr>
+          <th>Select</th>
+          <th>Working Place</th>
+        </tr>
+      </thead>
+      <tbody>
+        <!-- Places data will be dynamically added here -->
+      </tbody>
+    </table>
+  </div>
+
+  <div>
+    <h3>Step 2: Select Workers</h3>
+    <input type="text" id="searchInput" placeholder="Search Worker" oninput="searchAndShowWorkers()">
+    <button onclick="selectAllWorkers()">Select All Workers</button><br>
+
+    <table id="workersTable" style="display:none;" >
+      <thead>
+        <tr>
+          <th>Select</th>
+          <th>Worker Name</th>
+          <th>Working Place</th>
+        </tr>
+      </thead>
+      <tbody>
+        <!-- Worker data will be dynamically added here -->
+      </tbody>
+    </table>
+
+    <button onclick="saveAttendance()">Submit</button><br>
+    <button onclick="clearHistory()">Clear History</button>
+  </div>
+  
+
+  <script>
+    // Places data array
+    const placesData = [
+      'V Kings Events',
+      'Another Place',
+      'Random Place A',
+      'Random Place B',
+      'Random Place C',
+      // Add more place data as needed
+    ];
+
+    // Workers data array with associated workplace
+    const workersData = [
+      { id: 1, name: 'John Doe', place: '' },
+      { id: 2, name: 'Jane Smith', place: '' },
+      { id: 3, name: 'Alice Johnson', place: '' },
+      { id: 4, name: 'Bob Anderson', place: '' },
+      { id: 5, name: 'Charlie Brown', place: '' },
+      { id: 6, name: 'David Clark', place: '' },
+      { id: 7, name: 'Eva White', place: '' },
+      // Add more worker data as needed
+    ];
+
+    let selectedPlace = '';
+
+    function showAllPlaces() {
+      const tableBody = document.querySelector('#placesTable tbody');
+
+      // Clear existing rows
+      tableBody.innerHTML = '';
+
+      // Populate the table with place data
+      placesData.forEach(place => {
+        const row = tableBody.insertRow();
+        const cell1 = row.insertCell(0);
+        const cell2 = row.insertCell(1);
+
+        cell1.innerHTML = `<input type="radio" name="selectedPlace" value="${place}" onclick="selectPlace('${place}')">`;
+        cell2.textContent = place;
+      });
+    }
+
+    function selectPlace(place) {
+      selectedPlace = place;
+      showWorkers();
+    }
+
+    function showWorkers() {
+      const tableBody = document.querySelector('#workersTable tbody');
+
+      // Clear existing rows
+      tableBody.innerHTML = '';
+
+      // Populate the table with worker data for the selected place
+      workersData.forEach(worker => {
+        if (worker.place === selectedPlace || worker.place === '') {
+          const row = tableBody.insertRow();
+          const cell1 = row.insertCell(0);
+          const cell2 = row.insertCell(1);
+          const cell3 = row.insertCell(2);
+
+          cell1.innerHTML = `<input type="checkbox" name="selectedWorkers" value="${worker.id}">`;
+          cell2.textContent = worker.name;
+          cell3.textContent = worker.place || selectedPlace;
+        }
+      });
+
+      // Show the table
+      document.getElementById('workersTable').style.display = 'table';
+    }
+
+    function saveAttendance() {
+      const selectedWorkers = document.querySelectorAll('input[name="selectedWorkers"]:checked');
+      const attendanceDate = new Date().toLocaleDateString();
+      const attendanceData = [];
+
+      selectedWorkers.forEach(worker => {
+        const workerId = worker.value;
+        const workerData = workersData.find(w => w.id === parseInt(workerId));
+        const workerName = workerData.name;
+
+        // Update the worker's place
+        workerData.place = selectedPlace;
+
+        // Add the attendance to the array
+        attendanceData.push({ workerName, attendanceDate, place: selectedPlace });
+      });
+
+      // Save updated worker data to local storage
+      localStorage.setItem('workersData', JSON.stringify(workersData));
+
+      // Retrieve existing attendance data from local storage
+      const existingAttendanceData = JSON.parse(localStorage.getItem('attendanceData')) || [];
+
+      // Combine existing and new attendance data
+      const newAttendanceData = existingAttendanceData.concat(attendanceData);
+
+      // Save updated attendance data to local storage
+      localStorage.setItem('attendanceData', JSON.stringify(newAttendanceData));
+
+      // Redirect to the attendance saved list page
+      window.location.href = 'file:///C:/Users/HASH/Documents/html%20test/attendace%20saved%20list.html';
+    }
+
+    // Function to search for places and show them
+    function searchAndShowPlaces() {
+      const searchInput = document.getElementById('searchPlaceInput').value.toLowerCase();
+      const tableBody = document.querySelector('#placesTable tbody');
+
+      // Clear existing rows
+      tableBody.innerHTML = '';
+
+      // Filter places based on search input
+      const filteredPlaces = placesData.filter(place => place.toLowerCase().includes(searchInput));
+
+      // Populate the table with filtered place data
+      filteredPlaces.forEach(place => {
+        const row = tableBody.insertRow();
+        const cell1 = row.insertCell(0);
+        const cell2 = row.insertCell(1);
+
+        cell1.innerHTML = `<input type="radio" name="selectedPlace" value="${place}" onclick="selectPlace('${place}')">`;
+        cell2.textContent = place;
+      });
+    }
+
+    // Function to search for workers and show them
+    function searchAndShowWorkers() {
+      const tableBody = document.querySelector('#workersTable tbody');
+
+      // Clear existing rows
+      tableBody.innerHTML = '';
+
+      // Filter workers based on search input
+      workersData.forEach(worker => {
+        if (worker.place === selectedPlace || worker.place === '') {
+          if (worker.name.toLowerCase().includes(document.getElementById('searchInput').value.toLowerCase())) {
+            const row = tableBody.insertRow();
+            const cell1 = row.insertCell(0);
+            const cell2 = row.insertCell(1);
+            const cell3 = row.insertCell(2);
+
+            cell1.innerHTML = `<input type="checkbox" name="selectedWorkers" value="${worker.id}">`;
+            cell2.textContent = worker.name;
+            cell3.textContent = worker.place || selectedPlace;
+          }
+        }
+      });
+
+      // Show the table
+      document.getElementById('workersTable').style.display = 'table';
+    }
+
+    // Function to select all workers
+    function selectAllWorkers() {
+      const checkboxes = document.querySelectorAll('input[name="selectedWorkers"]');
+      checkboxes.forEach(checkbox => {
+        checkbox.checked = true;
+      });
+    }
+
+    function clearHistory() {
+      // Show confirmation dialog
+      const isConfirmed = confirm("Are you sure you want to clear the history?");
+      
+      if (isConfirmed) {
+        // Clear attendance data from local storage
+        localStorage.removeItem('attendanceData');
+        alert("History cleared successfully!");
+      } else {
+        alert("History not cleared.");
+      }
+    }
+  </script>
+
+</body>
+</html>
