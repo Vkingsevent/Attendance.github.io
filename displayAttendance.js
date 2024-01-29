@@ -37,7 +37,7 @@ document.body.appendChild(downloadLink);
 
 // Create a redirect link
 const redirectLink = document.createElement('a');
-redirectLink.href = 'AttendanceRegistration.html';
+redirectLink.href = 'Attendance Registration.html';
 redirectLink.textContent = 'Go to Attendance Registration';
 
 // Add some styles to make it attractive
