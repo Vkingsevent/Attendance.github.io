@@ -21,7 +21,7 @@ const blob = new Blob([formattedData], { type: 'text/plain' });
 const downloadLink = document.createElement('a');
 downloadLink.href = URL.createObjectURL(blob);
 downloadLink.download = 'attendance_list.txt';
-downloadLink.textContent = 'Download Attendance List';
+downloadLink.textContent = 'Download List';
 
 // Add some styles to make it attractive
 downloadLink.style.padding = '10px';
@@ -38,7 +38,7 @@ document.body.appendChild(downloadLink);
 // Create a redirect link
 const redirectLink = document.createElement('a');
 redirectLink.href = 'Attendance Registration.html';
-redirectLink.textContent = 'Go to Attendance Registration';
+redirectLink.textContent = 'Go to Registration';
 
 // Add some styles to make it attractive
 redirectLink.style.padding = '10px';
