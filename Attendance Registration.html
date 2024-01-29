@@ -1,3 +1,4 @@
+<!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8">
@@ -69,15 +70,16 @@
       background-color: #4caf50;
       color: white;
     }
-input[type="radio"] {
-  transform: scale(1.5); /* Adjust the scale value to increase or decrease the size */
-  margin-right: 5px; /* Optional: Adjust the margin for spacing */
-}
-input[type="checkbox"] {
-  transform: scale(1.5); /* Adjust the scale value to increase or decrease the size */
-  margin-right: 5px; /* Optional: Adjust the margin for spacing */
-}
 
+    input[type="radio"] {
+      transform: scale(1.5); /* Adjust the scale value to increase or decrease the size */
+      margin-right: 5px; /* Optional: Adjust the margin for spacing */
+    }
+
+    input[type="checkbox"] {
+      transform: scale(1.5); /* Adjust the scale value to increase or decrease the size */
+      margin-right: 5px; /* Optional: Adjust the margin for spacing */
+    }
   </style>
 </head>
 <body>
@@ -85,6 +87,9 @@ input[type="checkbox"] {
   <h2>Attendance Registration - V Kings Events</h2>
 
   <div>
+    <label for="attendanceDate">Select Date:</label>
+    <input type="date" id="attendanceDate" required>
+    
     <h1>📍</h1>
     <input type="text" id="searchPlaceInput" placeholder="Search Working Place" oninput="searchAndShowPlaces()">
     <button onclick="showAllPlaces()">Show All</button>
@@ -123,7 +128,6 @@ input[type="checkbox"] {
     <button onclick="saveAttendance()">Submit</button><br>
     <button onclick="clearHistory()">Clear History</button>
   </div>
-  
 
   <script>
     // Places data array
@@ -217,7 +221,13 @@ input[type="checkbox"] {
 
     function saveAttendance() {
       const selectedWorkers = document.querySelectorAll('input[name="selectedWorkers"]:checked');
-      const attendanceDate = new Date().toLocaleDateString();
+      const selectedDate = document.getElementById('attendanceDate').value;
+
+      if (!selectedDate) {
+        alert('Please select a date before submitting.');
+        return;
+      }
+
       const attendanceData = [];
 
       selectedWorkers.forEach(worker => {
@@ -229,7 +239,7 @@ input[type="checkbox"] {
         workerData.place = selectedPlace;
 
         // Add the attendance to the array
-        attendanceData.push({ workerName, attendanceDate, place: selectedPlace });
+        attendanceData.push({ workerName, attendanceDate: selectedDate, place: selectedPlace });
       });
 
       // Save updated worker data to local storage
