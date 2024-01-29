@@ -35,3 +35,22 @@ downloadLink.style.cursor = 'pointer';
 // Append the link to the document
 document.body.appendChild(downloadLink);
 
+// Create a redirect link
+const redirectLink = document.createElement('a');
+redirectLink.href = 'AttendanceRegistration.html';
+redirectLink.textContent = 'Go to Attendance Registration';
+
+// Add some styles to make it attractive
+redirectLink.style.padding = '10px';
+redirectLink.style.backgroundColor = '#27ae60';
+redirectLink.style.color = '#fff';
+redirectLink.style.textDecoration = 'none';
+redirectLink.style.borderRadius = '5px';
+redirectLink.style.fontWeight = 'bold';
+redirectLink.style.cursor = 'pointer';
+redirectLink.style.marginTop = '10px'; // Add some margin to separate the links
+
+// Append the link to the document
+document.body.appendChild(redirectLink);
+
+
