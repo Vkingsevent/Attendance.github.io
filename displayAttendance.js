@@ -1,3 +1,5 @@
+// ... (existing code)
+
 // Retrieve attendance data from local storage
 const storedAttendanceData = JSON.parse(localStorage.getItem('attendanceData')) || [];
 const displayArea = document.getElementById('savedAttendanceDisplay');
@@ -23,4 +25,3 @@ downloadLink.textContent = 'Download Attendance List';
 
 // Append the link to the document
 document.body.appendChild(downloadLink);
-  
