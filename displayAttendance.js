@@ -23,5 +23,15 @@ downloadLink.href = URL.createObjectURL(blob);
 downloadLink.download = 'attendance_list.txt';
 downloadLink.textContent = 'Download Attendance List';
 
+// Add some styles to make it attractive
+downloadLink.style.padding = '10px';
+downloadLink.style.backgroundColor = '#3498db';
+downloadLink.style.color = '#fff';
+downloadLink.style.textDecoration = 'none';
+downloadLink.style.borderRadius = '5px';
+downloadLink.style.fontWeight = 'bold';
+downloadLink.style.cursor = 'pointer';
+
 // Append the link to the document
 document.body.appendChild(downloadLink);
+
