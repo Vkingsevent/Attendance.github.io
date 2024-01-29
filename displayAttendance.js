@@ -32,9 +32,6 @@ downloadLink.style.borderRadius = '5px';
 downloadLink.style.fontWeight = 'bold';
 downloadLink.style.cursor = 'pointer';
 
-// Append the link to the document
-document.body.appendChild(downloadLink);
-
 // Create a redirect link
 const redirectLink = document.createElement('a');
 redirectLink.href = 'Attendance Registration.html';
@@ -50,7 +47,11 @@ redirectLink.style.fontWeight = 'bold';
 redirectLink.style.cursor = 'pointer';
 redirectLink.style.marginTop = '10px'; // Add some margin to separate the links
 
-// Append the link to the document
+// Center the buttons within the body
+document.body.style.display = 'flex';
+document.body.style.flexDirection = 'column';
+document.body.style.alignItems = 'center';
+
+// Append the links to the document
+document.body.appendChild(downloadLink);
 document.body.appendChild(redirectLink);
-
-
